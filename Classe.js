@@ -17,14 +17,33 @@ class Ducks extends Game{
     speedX = 0;
     speedY = 0;
     isShot = false;
+
+    duck_reset(){
+        if(this.x >= 1152){
+            let aleatorio = (Math.floor(Math.random() * 101)) * -1
+            this.x = aleatorio
+        }
+    }
+
+    mov_duck(speedX, speedY){
+        this.x += speedX;
+        this.y += speedY;
+    }
+
     isOutOfScreen(){
         return jogo = true
     }
 
     dieAnimation(){
+
     }
 
-    drawDuck(){
+    drawDuck(canva){
+        if (this.image) {
+            let img = new Image();
+            img.src = this.image;
+            canva.drawImage(img, this.x, this.y, this.w, this.h);
+        }
 }
 }
 
