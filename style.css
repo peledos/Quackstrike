@@ -8,8 +8,6 @@ body{
 }
 
 canvas{
-    height: 1080px;
-    width: 1152px;
     margin: auto;
     position: absolute;
     top: 0;
