@@ -20,8 +20,8 @@ class Ducks extends Game{
 
     duck_reset(){
         if(this.x >= 1152){
-            let aleatorio = (Math.floor(Math.random() * 101)) * -1
-            this.x = aleatorio
+            this.y = Math.floor(Math.random() * 300)
+            this.x = -Math.floor(Math.random() * 201)
         }
     }
 
