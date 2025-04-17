@@ -38,7 +38,7 @@ class Ducks extends Game{
 
     duck_reset(tiro){
         if(this.x >= 1152 || tiro === true){
-            this.y = Math.floor(Math.random() * (1080 - this.h));
+            this.y = Math.floor(Math.random() * (825 - 77 + 1)) + 77;
             this.x = -Math.floor(Math.random() * 201);
         }
     }
