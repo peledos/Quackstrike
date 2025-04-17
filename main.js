@@ -1,16 +1,21 @@
-canva = document.getElementById("des").getContext('2d');
+const canva = document.getElementById("des").getContext('2d');
 
 let pato = new Ducks(100,400,50,80,0,[],'./assets/IMG_png/pato-preto.png',0,0,0,false);
-let fundo = new Game(0,0,1080,1920,0,[],'./assets/fundo.png',0,0,0,false);
-let fundo2 = new Game(0,0,1080,1920,0,[],'./assets/fundo.png',0,0,0,false);
-let texto = new Game(0,0,1080,1920,0,[],'./assets/fundo.png',0,0,0,false);
+let fundo = new Game(0,0,950,1920,0,[],'./assets/fundo.png',0,0,0,false);
+let fundo2 = new Game(1152,0,950,1920,0,[],'./assets/fundo.png',0,0,0,false);
+let texto = new Game(0,0,970,1920,0,[],'./assets/fundo.png',0,0,0,false);
+let bullet = new Bullet(0,0,0,0,0,[],'./assets/IMG_png/pato-preto.png',0,0,0,false);
+let tremFundo = new Game(0, 360, 595, 1038, 0,[],'./assets/IMG_png/tremz.png',0,0,0,false);
+bullet.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5'];
 
 let play = true;
 
 function checarClickNoPato() {
     const canvasElement = document.getElementById("des");
 
+
     canvasElement.addEventListener("click", (event) => {
+        if (bullet.bullets.length >= 1) {
         const rect = canvasElement.getBoundingClientRect();
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
@@ -22,10 +27,19 @@ function checarClickNoPato() {
             mouseY >= pato.y &&
             mouseY <= pato.y + pato.h
         ) {
+            bullet.bullets.pop();
+            console.log("Acertou o pato! Balas: " + bullet.bullets.length);
             pato.duck_reset(tiro) // Reinicia o pato
             fundo.score += 10; // Adiciona 10 pontos ao score
             console.log(mouseX, mouseY); // Para depuração
+        } else {
+            console.log("Sem balas");
+            console.log("R para recarregar");
+            // Aqui você pode adicionar lógica para recarregar as balas
+            bullet.bullets.push(new Bullet(0,0,0,0,0,[],'./assets/IMG_png/pato-preto.png',0,0,0,false));
+            console.log(bullet.bullets.length);
         }
+    }
     });
 }
 
@@ -33,6 +47,7 @@ function desenha(){
     fundo.drawBackground(canva);
     fundo2.drawBackground(canva);
     pato.drawDuck(canva);
+    tremFundo.drawBackground(canva)
 }
 
 function atualiza(){
@@ -51,7 +66,7 @@ function atualiza(){
         fundo2.x = fundo.x + fundo.w;
     }
 }
-
+checarClickNoPato();
 }
 
 function main(){
