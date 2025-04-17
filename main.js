@@ -27,9 +27,14 @@ function reload() {
 }
 
 async function tiro() {
-    bullet.bullets.pop();
-    await sleep(1000);
-}
+    addEventListener("click", (e) => {
+        if (bullet.bullets.length >= 1) {
+            
+            bullet.bullets.pop();
+            
+        }
+})
+};
 
 function checarClickNoPato() {
     const canvasElement = document.getElementById("des");
@@ -60,6 +65,7 @@ function checarClickNoPato() {
 
             }
         }
+        bullet.bullets.pop();
     });
 }
 
@@ -89,6 +95,7 @@ function atualiza() {
     }
     checarClickNoPato();
     reload();
+    tiro();
 }
 
 function main() {
