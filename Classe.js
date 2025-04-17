@@ -13,6 +13,44 @@ class Game {
         this.isGameOver = isGameOver;
     }
 
+    des_obj(canva, x, y, w, h, a, b1 = 0, b2 = 0) {
+        canva.fillStyle = a;
+        
+        // Se não tem borda arredondada, usa fillRect normal
+        if (b1 <= 0 && b2 <= 0) {
+            canva.fillRect(x, y, w, h);
+            return;
+        }
+        
+        // Suporte para navegadores modernos com roundRect
+        if (canva.roundRect) {
+            canva.beginPath();
+            canva.roundRect(x, y, w, h, [b1, b2]);
+            canva.fill();
+        } 
+        // Fallback para navegadores antigos
+        else {
+            this._drawRoundedRect(canva, x, y, w, h, Math.max(b1, b2));
+        }
+    }
+
+    // Método auxiliar para desenhar retângulos arredondados em navegadores antigos
+    _drawRoundedRect(ctx, x, y, width, height, radius, a) {
+        ctx.fillStyle = a;
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+        ctx.fill();
+    }
+
     drawBackground(canva){
         if (this.image) {
             let img = new Image();
