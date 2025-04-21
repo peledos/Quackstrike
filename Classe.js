@@ -30,6 +30,14 @@ class Game {
         canva.fillStyle = color;
         canva.fillText(text, x, y);
     }
+
+    drawRectangle(canva, x, y, width, height, color, opacity) {
+        canva.save(); // Salva o estado atual do canvas
+        canva.globalAlpha = opacity; // Define a opacidade
+        canva.fillStyle = color; // Define a cor
+        canva.fillRect(x, y, width, height); // Desenha o retângulo
+        canva.restore(); // Restaura o estado do canvas
+    }
 }
 
 class Ducks extends Game{
@@ -38,7 +46,7 @@ class Ducks extends Game{
 
     duck_reset(tiro){
         if(this.x >= 1152 || tiro === true){
-            this.y = Math.floor(Math.random() * (1080 - this.h));
+            this.y = Math.floor(Math.random() * (800 - 100 + 1)) + 100;
             this.x = -Math.floor(Math.random() * 201);
         }
     }
