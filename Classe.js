@@ -30,6 +30,14 @@ class Game {
         canva.fillStyle = color;
         canva.fillText(text, x, y);
     }
+
+    drawRectangle(canva, x, y, width, height, color, opacity) {
+        canva.save(); // Salva o estado atual do canvas
+        canva.globalAlpha = opacity; // Define a opacidade
+        canva.fillStyle = color; // Define a cor
+        canva.fillRect(x, y, width, height); // Desenha o retângulo
+        canva.restore(); // Restaura o estado do canvas
+    }
 }
 
 class Ducks extends Game{
@@ -38,7 +46,7 @@ class Ducks extends Game{
 
     duck_reset(tiro){
         if(this.x >= 1152 || tiro === true){
-            this.y = Math.floor(Math.random() * (1080 - this.h));
+            this.y = Math.floor(Math.random() * (800 - 100 + 1)) + 100;
             this.x = -Math.floor(Math.random() * 201);
         }
     }
@@ -68,6 +76,18 @@ class Ducks extends Game{
 class Bullet extends Game{
     speed = 0
     isActive = false
+
+    checarArma(arma){
+        if(arma == 1){
+           return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5'];
+        }
+        else if(arma == 2){
+           return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5', 'bullet6', 'bullet7', 'bullet8', 'bullet9', 'bullet10'];
+        }
+        else if(arma == 3){
+           return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5', 'bullet6', 'bullet7', 'bullet8', 'bullet9', 'bullet10', 'bullet11', 'bullet12', 'bullet13', 'bullet14', 'bullet15'];
+        }
+    }
     
     drawBullets(){
 
