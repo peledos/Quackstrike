@@ -48,10 +48,10 @@ bullet.bullets = Array(balasPorArma[armaEquipada]).fill('bullet');
 
 let armasCompradas = { pistol: true, shotgun: false, ak47: false, lanca_granada: false }; // Controle de armas compradas
 
-let menu = false; // Variável para controlar o menu
+let menu = true; // Variável para controlar o menu
 let play = false; // Variável para controlar o jogo
 let loja = false; // Variável para controlar a loja
-let gameOvergo = true; // Variável para controlar o game over
+let gameOvergo = false; // Variável para controlar o game over
 
 
 document.addEventListener("keydown", (event) => {
@@ -63,7 +63,7 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-function gameOver(){
+function gameOver() {
     if (fundo.score <= -1) {
         gameOvergo = true;
         play = false;
@@ -71,7 +71,7 @@ function gameOver(){
         loja = false;
         console.log("Game Over!");
         fundo.score = 0;
-    }   
+    }
 }
 
 // Adiciona o evento de clique ao canvas para checar os menus e o jogo
@@ -87,7 +87,7 @@ canvasElement.addEventListener("click", (event) => {
             play = true;
             loja = false;
             menu = false;
-            gameOvergo = false; 
+            gameOvergo = false;
             console.log("Botão Jogar clicado!");
         }
 
@@ -200,7 +200,7 @@ canvasElement.addEventListener("click", (event) => {
                 const shotY = mouseY + offsetY;
 
                 impactos.push({ x: shotX, y: shotY, time: Date.now() });
-
+                
                 patos.forEach((pato) => {
                     if (
                         shotX >= pato.x &&
@@ -211,51 +211,54 @@ canvasElement.addEventListener("click", (event) => {
                         pato.duck_reset(true); // Reinicia o pato
                         fundo.score += 10; // Adiciona 10 pontos ao score
                         acertou = true;
-
+                        
                         temporaryTexts.push({ text: "+10", x: shotX, y: shotY, time: Date.now() });
                     }
                 });
             }
-
+            
             if (!acertou) {
                 fundo.score -= 5;
                 temporaryTexts.push({ text: "-5", x: mouseX, y: mouseY, time: Date.now() });
             }
-        } else if (play === true && armaEquipada === "ak47" && bullet.bullets.length >= 1) {
-            isMouseDown = true; // Marca que o botão do mouse está pressionado
-            // AK-47: dispara continuamente enquanto o botão é pressionado
-            const shootAk47 = () => {
-                if (isMouseDown && bullet.bullets.length > 0) {
-                    bullet.bullets.pop(); // Remove uma bala
-                    let acertou = false;
-
-                    patos.forEach((pato) => {
-                        if (
-                            mouseX >= pato.x &&
-                            mouseX <= pato.x + pato.w &&
-                            mouseY >= pato.y &&
-                            mouseY <= pato.y + pato.h
-                        ) {
-                            pato.duck_reset(true); // Reinicia o pato
-                            fundo.score += 10; // Adiciona 10 pontos ao score
-                            acertou = true;
-
-                            temporaryTexts.push({ text: "+10", x: mouseX, y: mouseY, time: Date.now() });
-                        }
-                    });
-                    impactos.push({ x: mouseX, y: mouseY, time: Date.now() });
-
-                    if (!acertou) {
-                        fundo.score -= 5;
-                        temporaryTexts.push({ text: "-5", x: mouseX, y: mouseY, time: Date.now() });
-                    }
-
-                    setTimeout(shootAk47, 200); // Delay de 0.2 segundos entre os disparos
+        }else if (armaEquipada === "ak47" && bullet.bullets.length >= 1) {
+            // Pistola: dispara um único tiro por clique
+            bullet.bullets.pop(); // Remove uma bala
+            let acertou = false;
+            
+            patos.forEach((pato) => {
+                const offsetX = Math.floor(Math.random() * 201) - 100; // Valor entre -100 e 100
+                const offsetY = Math.floor(Math.random() * 201) - 100; // Valor entre -100 e 100
+                
+                const shotX = mouseX + offsetX;
+                const shotY = mouseY + offsetY;
+                if (
+                    mouseX >= pato.x &&
+                    mouseX <= pato.x + pato.w &&
+                    mouseY >= pato.y &&
+                    mouseY <= pato.y + pato.h
+                ) {
+                    pato.duck_reset(true); // Reinicia o pato
+                    fundo.score += 10; // Adiciona 10 pontos ao score
+                    acertou = true;
+                    patoSom.play(); // Toca o som do pato
+                    
+                    // Adiciona texto temporário
+                    temporaryTexts.push({ text: "+10", x: shotX, y: shotY, time: Date.now() });
+                    impactos.push({ x: shotX, y: shotY, time: Date.now() });
                 }
-            };
-
-            shootAk47(); // Inicia o disparo contínuo
-        } else if (armaEquipada === "lanca_granada" && bullet.bullets.length >= 1) {
+            });
+            
+            if (!acertou) {
+                fundo.score -= 5; // Penalidade por errar
+                temporaryTexts.push({ text: "-5", x: mouseX, y: mouseY, time: Date.now() });
+            }
+            // Limita o número de balas a 20
+            if (bullet.bullets.length > 20) {
+                bullet.bullets = bullet.bullets.slice(0, 20);
+            }
+        }
+         else if (armaEquipada === "lanca_granada" && bullet.bullets.length >= 1) {
             // Lança-granada: causa dano em área
             bullet.bullets.pop(); // Remove uma bala
             let acertou = false;
@@ -410,7 +413,7 @@ function desenha() {
             "30px Arial Black",
             armaEquipada === "pistol" ? "lightgreen" : "white"
         );
-        
+
 
         // Shotgun
         fundo.drawRectangle(canva, 710, 225, 300, 150, "black", 0.5);
@@ -450,7 +453,7 @@ function desenha() {
             "30px Arial Black",
             armaEquipada === "lanca_granada" ? "lightgreen" : "white"
         );
-    }else if (gameOvergo === true) {
+    } else if (gameOvergo === true) {
         fundoMenu.drawBackground(canva);
         fundo.drawRectangle(canva, 300, 100, 500, 700, "black", 0.5);
         fundo.drawRectangle(canva, 300, 100, 500, 100, "black", 0.5);
@@ -461,12 +464,13 @@ function desenha() {
         fundo.drawRectangle(canva, 350, 405, 400, 150, "black", 0.5);
         texto.drawText(canva, "🎮 | Recomeçar", 430, 300, 500);
         texto.drawText(canva, "🏪 | Menu", 480, 490, 500);
-        texto.drawText(canva, "⭐ | Tempo: " + a/100 , 445, 620, 500);
+        texto.drawText(canva, "⭐ | Tempo: " + a / 100, 445, 620, 500);
         fundo.score = 0; // Reinicia o score
     }
 }
 
 function atualiza() {
+    
     gameOver(); // Verifica se o jogo acabou
     if (play) {
         const currentTime = Date.now(); // Atualiza o tempo atual a cada frame
@@ -477,13 +481,22 @@ function atualiza() {
         // Movimento dos patos
         patos.forEach((pato, index) => {
             if (index < 2 || (index < 4 && fundo.score >= 50) || (index < 5 && fundo.score >= 100)) {
-                pato.mov_duck(6, 0);
-
+                if (fundo.score >= 0) {
+                    pato.mov_duck(6, 0);
+                } else if (fundo.score >= 100) {
+                    pato.mov_duck(7, 0);
+                } else if (fundo.score >= 150) {
+                    pato.mov_duck(8, 0);
+                }
                 // Verifica se o pato passou da tela
                 if (pato.hasPassedScreen()) {
-                    fundo.score -= 10; // Reduz 10pontos
+                    if (fundo.score <= 50) {
+                        fundo.score -= 10; // Reduz 10pontos
+                    } else if (fundo.score >= 51) {
+                        fundo.score -= 5; // Reduz 20 pontos
+                    }
                     temporaryTexts.push({ text: "-10", x: pato.x, y: pato.y, time: Date.now() });
-                    pato.duck_reset(false); // Reinicia o pato
+                    pato.duck_reset(true); // Reinicia o pato
                 }
             }
         });
