@@ -14,6 +14,10 @@ let fundoMenu = new Game(0, 0, 950, 1920, 0, [], './assets/fundo.png', 0, 0, 0, 
 let texto = new Game(0, 0, 970, 1920, 0, [], './assets/fundo.png', 0, 0, 0, false);
 let bullet = new Bullet(0, 0, 0, 0, 0, [], './assets/IMG_png/pato-preto.png', 0, 0, 0, false);
 let tremFundo = new Game(30, 730, 214, 1038, 0, [], './assets/IMG_png/tremz.png', 0, 0, 0, false);
+let tremPistol = new Game(30, 730, 214, 1038, 0, [], './assets/pistolTrem.png', 0, 0, 0, false);
+let tremShotgun = new Game(30, 730, 214, 1038, 0, [], './assets/tremShotgun.png', 0, 0, 0, false);
+let tremLanca_granada = new Game(30, 730, 214, 1038, 0, [], './assets/tremLanca.png', 0, 0, 0, false);
+let tremAk47 = new Game(30, 730, 214, 1038, 0, [], './assets/tremAk.png', 0, 0, 0, false);
 
 let pistol = new Bullet(250, 270, 60, 90, 0, [], './assets/pistol.png', 0, 0, 0, false);
 let shotgun = new Bullet(810, 280, 50, 100, 0, [], './assets/shotgun.png', 0, 0, 0, false);
@@ -48,10 +52,10 @@ bullet.bullets = Array(balasPorArma[armaEquipada]).fill('bullet');
 
 let armasCompradas = { pistol: true, shotgun: false, ak47: false, lanca_granada: false }; // Controle de armas compradas
 
-let menu = false; // Variável para controlar o menu
+let menu = true; // Variável para controlar o menu
 let play = false; // Variável para controlar o jogo
 let loja = false; // Variável para controlar a loja
-let gameOvergo = true; // Variável para controlar o game over
+let gameOvergo = false; // Variável para controlar o game over
 
 
 document.addEventListener("keydown", (event) => {
@@ -63,7 +67,7 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-function gameOver(){
+function gameOver() {
     if (fundo.score <= -1) {
         gameOvergo = true;
         play = false;
@@ -71,7 +75,7 @@ function gameOver(){
         loja = false;
         console.log("Game Over!");
         fundo.score = 0;
-    }   
+    }
 }
 
 // Adiciona o evento de clique ao canvas para checar os menus e o jogo
@@ -87,7 +91,7 @@ canvasElement.addEventListener("click", (event) => {
             play = true;
             loja = false;
             menu = false;
-            gameOvergo = false; 
+            gameOvergo = false;
             console.log("Botão Jogar clicado!");
         }
 
@@ -184,7 +188,7 @@ canvasElement.addEventListener("click", (event) => {
             }
         } else if (armaEquipada === "shotgun" && bullet.bullets.length >= 1) {
             // Shotgun: dispara 5 tiros em um raio de 100px
-            canva.drawImage('./assets/shotgun.png', 350, 350, 100, 100); // Desenha a imagem da shotgun no clique
+
             bullet.bullets.pop(); // Remove uma bala
             bullet.bullets.pop(); // Remove uma bala
             bullet.bullets.pop(); // Remove uma bala
@@ -310,17 +314,13 @@ canvasElement.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
     if (event.key === "r" || event.key === "R") {
-        if (armaEquipada === "pistol" || armaEquipada === "shotgun" || armaEquipada === "ak47" || armaEquipada === "lanca_granada") {
-            // Recarrega o array de balas com base na arma equipada
-            bullet.bullets = Array(balasPorArma[armaEquipada]).fill('bullet');
-            console.log(`${armaEquipada} recarregada!`);
+        if (bullet.bullets.length === 0) {
+            if (armaEquipada === "pistol" || armaEquipada === "shotgun" || armaEquipada === "ak47" || armaEquipada === "lanca_granada") {
+                // Recarrega o array de balas com base na arma equipada
+                bullet.bullets = Array(balasPorArma[armaEquipada]).fill('bullet');
+                console.log(`${armaEquipada} recarregada!`);
+            }
         }
-    }
-});
-
-document.addEventListener("keydown", (event) => {
-    if (event.key === "f") {
-        fundo.score += 100; // Adiciona 100 pontos ao score
     }
 });
 
@@ -329,15 +329,24 @@ function desenha() {
         fundo.drawBackground(canva);
         fundo2.drawBackground(canva);
 
+        if (armaEquipada === "pistol") {
+            tremPistol.drawBackground(canva);
+        } else if (armaEquipada === "shotgun") {
+            tremShotgun.drawBackground(canva);
+        }else if (armaEquipada === "ak47") {
+            tremAk47.drawBackground(canva);
+        }else if (armaEquipada === "lanca_granada") {
+            tremLanca_granada.drawBackground(canva);
+        }
         // Desenha todos os patos
         patos.forEach((pato, index) => {
             if (index < 2 || (index < 4 && fundo.score >= 50) || (index < 5 && fundo.score >= 90)) {
                 pato.drawDuck(canva);
-            }
+            } 
         });
 
         // Desenha trem
-        tremFundo.drawBackground(canva);
+        // tremFundo.drawBackground(canva);
 
         // Desenha explosões
         explosoes.forEach((explosao, index) => {
@@ -410,7 +419,7 @@ function desenha() {
             "30px Arial Black",
             armaEquipada === "pistol" ? "lightgreen" : "white"
         );
-        
+
 
         // Shotgun
         fundo.drawRectangle(canva, 710, 225, 300, 150, "black", 0.5);
@@ -450,7 +459,7 @@ function desenha() {
             "30px Arial Black",
             armaEquipada === "lanca_granada" ? "lightgreen" : "white"
         );
-    }else if (gameOvergo === true) {
+    } else if (gameOvergo === true) {
         fundoMenu.drawBackground(canva);
         fundo.drawRectangle(canva, 300, 100, 500, 700, "black", 0.5);
         fundo.drawRectangle(canva, 300, 100, 500, 100, "black", 0.5);
@@ -461,68 +470,70 @@ function desenha() {
         fundo.drawRectangle(canva, 350, 405, 400, 150, "black", 0.5);
         texto.drawText(canva, "🎮 | Recomeçar", 430, 300, 500);
         texto.drawText(canva, "🏪 | Menu", 480, 490, 500);
-        texto.drawText(canva, "⭐ | Tempo: " + a/100 , 445, 620, 500);
+        texto.drawText(canva, "⭐ | Tempo: " + a / 100, 445, 620, 500);
         fundo.score = 0; // Reinicia o score
     }
+   
 }
+    function atualiza() {
+        gameOver(); // Verifica se o jogo acabou
+        if (play) {
+            const currentTime = Date.now(); // Atualiza o tempo atual a cada frame
 
-function atualiza() {
-    gameOver(); // Verifica se o jogo acabou
-    if (play) {
-        const currentTime = Date.now(); // Atualiza o tempo atual a cada frame
+            // Remove textos temporários após 2 segundos
+            temporaryTexts = temporaryTexts.filter((tempText) => currentTime - tempText.time < 2000);
 
-        // Remove textos temporários após 2 segundos
-        temporaryTexts = temporaryTexts.filter((tempText) => currentTime - tempText.time < 2000);
+            // Movimento dos patos
+            patos.forEach((pato, index) => {
+                if (index < 2 || (index < 4 && fundo.score >= 50) || (index < 5 && fundo.score >= 100)) {
+                    pato.mov_duck(6, 0);
 
-        // Movimento dos patos
-        patos.forEach((pato, index) => {
-            if (index < 2 || (index < 4 && fundo.score >= 50) || (index < 5 && fundo.score >= 100)) {
-                pato.mov_duck(6, 0);
-
-                // Verifica se o pato passou da tela
-                if (pato.hasPassedScreen()) {
-                    fundo.score -= 10; // Reduz 10pontos
-                    temporaryTexts.push({ text: "-10", x: pato.x, y: pato.y, time: Date.now() });
-                    pato.duck_reset(false); // Reinicia o pato
+                    // Verifica se o pato passou da tela
+                    if (pato.hasPassedScreen()) {
+                        fundo.score -= 10; // Reduz 10pontos
+                        temporaryTexts.push({ text: "-10", x: pato.x, y: pato.y, time: Date.now() });
+                        pato.duck_reset(true); // Reinicia o pato
+                    }
                 }
+            });
+
+            // Atualiza o tempo e desenha textos
+            fundo.drawRectangle(canva, 100, 65, 250, 150, "black", 0.5);
+            texto.drawText(canva, "⭐ | Pontos: " + fundo.score, 100, 100, "30px Arial", "yellow");
+            texto.drawText(canva, "🕛 | Tempo: " + (a / 100), 100, 150, "30px Arial", "yellow");
+            texto.drawText(canva, "🔫 | Balas: " + bullet.bullets.length, 100, 200, "30px Arial", "yellow");
+            if (bullet.bullets.length <= 3) {
+                texto.drawText(canva, "" + bullet.bullets.length, 257, 200, "31px Arial", "red");
             }
-        });
+            fundo.drawRectangle(canva, 100, 20, 135, 45, "black", 0.5);
+            texto.drawText(canva, "ESC (Menu)", 105, 50, "20px Arial Black", "yellow");
 
-        // Atualiza o tempo e desenha textos
-        fundo.drawRectangle(canva, 100, 65, 250, 150, "black", 0.5);
-        texto.drawText(canva, "⭐ | Pontos: " + fundo.score, 100, 100, "30px Arial", "yellow");
-        texto.drawText(canva, "🕛 | Tempo: " + (a / 100), 100, 150, "30px Arial", "yellow");
-        texto.drawText(canva, "🔫 | Balas: " + bullet.bullets.length, 100, 200, "30px Arial", "yellow");
-        if (bullet.bullets.length <= 3) {
-            texto.drawText(canva, "" + bullet.bullets.length, 257, 200, "31px Arial", "red");
+            if (bullet.bullets.length === 0) {
+                texto.drawText(canva, "Pressione R para recarregar", 350, 250, "30px Arial", "red");
+            }
+
+            // Movimento do fundo
+            fundo.mov_background(-2, 0);
+            fundo2.mov_background(-2, 0);
+
+            if (fundo.x + fundo.w <= 0) {
+                fundo.x = fundo2.x + fundo2.w;
+            }
+            if (fundo2.x + fundo2.w <= 0) {
+                fundo2.x = fundo.x + fundo.w;
+            }
+
+            a++; // Incrementa o contador de tempo
+
+
         }
-        fundo.drawRectangle(canva, 100, 20, 135, 45, "black", 0.5);
-        texto.drawText(canva, "ESC (Menu)", 105, 50, "20px Arial Black", "yellow");
-
-        if (bullet.bullets.length === 0) {
-            texto.drawText(canva, "Pressione R para recarregar", 350, 250, "30px Arial", "red");
-        }
-
-        // Movimento do fundo
-        fundo.mov_background(-2, 0);
-        fundo2.mov_background(-2, 0);
-
-        if (fundo.x + fundo.w <= 0) {
-            fundo.x = fundo2.x + fundo2.w;
-        }
-        if (fundo2.x + fundo2.w <= 0) {
-            fundo2.x = fundo.x + fundo.w;
-        }
-
-        a++; // Incrementa o contador de tempo
     }
-}
 
-function main() {
-    canva.clearRect(0, 0, 1152, 1080)
-    desenha()
-    atualiza()
-    requestAnimationFrame(main)
-}
+    function main() {
+        canva.clearRect(0, 0, 1152, 1080)
+        desenha()
+        atualiza()
+        requestAnimationFrame(main)
+    }
 
-main();
+    main()
