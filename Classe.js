@@ -40,37 +40,34 @@ class Game {
     }
 }
 
-class Ducks extends Game{
+class Ducks extends Game {
     speedX = 0;
     speedY = 0;
 
-    duck_reset(tiro){
-        if(this.x >= 1152 || tiro === true){
+    duck_reset(tiro) {
+        if (tiro === true) {
             this.y = Math.floor(Math.random() * (800 - 100 + 1)) + 100;
             this.x = -Math.floor(Math.random() * 201);
         }
     }
 
-    mov_duck(speedX, speedY){
+    hasPassedScreen() {
+        // Verifica se o pato passou da tela
+        return this.x >= 1152;
+    }
+
+    mov_duck(speedX, speedY) {
         this.x += speedX;
         this.y += speedY;
     }
 
-    isOutOfScreen(){
-        return jogo = true
-    }
-
-    dieAnimation(){
-
-    }
-
-    drawDuck(canva){
+    drawDuck(canva) {
         if (this.image) {
             let img = new Image();
             img.src = this.image;
             canva.drawImage(img, this.x, this.y, this.w, this.h);
         }
-}
+    }
 }
 
 class Bullet extends Game{
