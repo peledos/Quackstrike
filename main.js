@@ -231,11 +231,9 @@ canvasElement.addEventListener("click", (event) => {
             let acertou = false;
             
             patos.forEach((pato) => {
-                const offsetX = Math.floor(Math.random() * 201) - 100; // Valor entre -100 e 100
-                const offsetY = Math.floor(Math.random() * 201) - 100; // Valor entre -100 e 100
                 
-                const shotX = mouseX + offsetX;
-                const shotY = mouseY + offsetY;
+                const shotX = mouseX;
+                const shotY = mouseY;
                 if (
                     mouseX >= pato.x &&
                     mouseX <= pato.x + pato.w &&
@@ -483,50 +481,20 @@ function desenha() {
         if (play) {
             const currentTime = Date.now(); // Atualiza o tempo atual a cada frame
 
-<<<<<<< HEAD
             // Remove textos temporários após 2 segundos
             temporaryTexts = temporaryTexts.filter((tempText) => currentTime - tempText.time < 2000);
-=======
-function atualiza() {
-    
-    gameOver(); // Verifica se o jogo acabou
-    if (play) {
-        const currentTime = Date.now(); // Atualiza o tempo atual a cada frame
->>>>>>> 141758d9a7885da91037b104c9796acd13db5b25
 
             // Movimento dos patos
             patos.forEach((pato, index) => {
                 if (index < 2 || (index < 4 && fundo.score >= 50) || (index < 5 && fundo.score >= 100)) {
                     pato.mov_duck(6, 0);
 
-<<<<<<< HEAD
                     // Verifica se o pato passou da tela
                     if (pato.hasPassedScreen()) {
                         fundo.score -= 10; // Reduz 10pontos
                         temporaryTexts.push({ text: "-10", x: pato.x, y: pato.y, time: Date.now() });
                         pato.duck_reset(true); // Reinicia o pato
                     }
-=======
-        // Movimento dos patos
-        patos.forEach((pato, index) => {
-            if (index < 2 || (index < 4 && fundo.score >= 50) || (index < 5 && fundo.score >= 100)) {
-                if (fundo.score >= 0) {
-                    pato.mov_duck(6, 0);
-                } else if (fundo.score >= 100) {
-                    pato.mov_duck(7, 0);
-                } else if (fundo.score >= 150) {
-                    pato.mov_duck(8, 0);
-                }
-                // Verifica se o pato passou da tela
-                if (pato.hasPassedScreen()) {
-                    if (fundo.score <= 50) {
-                        fundo.score -= 10; // Reduz 10pontos
-                    } else if (fundo.score >= 51) {
-                        fundo.score -= 5; // Reduz 20 pontos
-                    }
-                    temporaryTexts.push({ text: "-10", x: pato.x, y: pato.y, time: Date.now() });
-                    pato.duck_reset(true); // Reinicia o pato
->>>>>>> 141758d9a7885da91037b104c9796acd13db5b25
                 }
             });
 
