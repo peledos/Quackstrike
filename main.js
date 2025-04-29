@@ -34,54 +34,6 @@ let patoSom = new Audio('./assets/audio/quack.mp3');
 let fundoSom = new Audio('./assets/audio/patoambiente.mp3');
 let recarregarSom = new Audio('./assets/audio/recarregar.mp3');
 
-// Adicionando os sons aos eventos correspondentes
-
-// Som de fundo do jogo
-fundoSom.loop = true; // Faz o som de fundo tocar em loop
-
-// Adicionando evento de interação do usuário para iniciar o áudio
-document.addEventListener("click", () => {
-    fundoSom.play().catch((error) => {
-        console.error("Erro ao reproduzir som de fundo:", error);
-    });
-});
-
-// Som ao atirar com a pistola
-document.addEventListener("click", (event) => {
-    if (armaEquipada === "pistol" && bullet.bullets.length > 0) {
-        pistolS.play();
-    }
-});
-
-// Som ao atirar com a shotgun
-document.addEventListener("click", (event) => {
-    if (armaEquipada === "shotgun" && bullet.bullets.length > 0) {
-        shotgunS.play();
-    }
-});
-
-// Som ao atirar com a AK-47
-document.addEventListener("click", (event) => {
-    if (armaEquipada === "ak47" && bullet.bullets.length > 0) {
-        ak47S.play();
-    }
-});
-
-// Som ao atirar com o lança-granada
-document.addEventListener("click", (event) => {
-    if (armaEquipada === "lanca_granada" && bullet.bullets.length > 0) {
-        lanca_granadaS.play();
-    }
-});
-
-// Som ao recarregar
-document.addEventListener("keydown", (event) => {
-    if ((event.key === "r" || event.key === "R") && bullet.bullets.length === 0) {
-        recarregarSom.play();
-    }
-});
-
-
 // Declarando os patos
 let patos = [
     new Ducks(-40, 400, 50, 80, 0, [], './assets/IMG_png/pato-preto.png', 0, 0, 0, false),
@@ -114,6 +66,18 @@ let gameOvergo = false; // Variável para controlar o game over
 
 let secretCode = "joao santos"; // Código secreto
 let inputSequence = ""; // Sequência de teclas pressionadas
+
+// Adicionando os sons aos eventos correspondentes
+
+// Som de fundo do jogo
+fundoSom.loop = true; // Faz o som de fundo tocar em loop
+
+// Adicionando evento de interação do usuário para iniciar o áudio
+document.addEventListener("click", () => {
+    fundoSom.play().catch((error) => {
+        console.error("Erro ao reproduzir som de fundo:", error);
+    });
+});
 
 document.addEventListener("keydown", (event) => {
     inputSequence += event.key.toLowerCase(); // Adiciona a tecla pressionada à sequência
@@ -398,8 +362,56 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
+if (play === true) {
+    // Adiciona um evento global para permitir a reprodução de áudio após interação do usuário
+document.addEventListener("click", () => {
+    // Inicializa os sons para garantir que o navegador permita a reprodução
+    const initSound = new Audio('./assets/audio/pistolaTiro.mp3');
+    initSound.play().catch(() => {}); // Ignora erros de reprodução inicial
+});
+
+// Reproduz o som correspondente ao tiro
+document.addEventListener("click", (event) => {
+    if (armaEquipada === "pistol" && bullet.bullets.length > 0) {
+        const pistolSound = new Audio('./assets/audio/pistolaTiro.mp3');
+        pistolSound.play().catch((error) => {
+            console.error("Erro ao reproduzir som da pistola:", error);
+        });
+    }
+
+    if (armaEquipada === "shotgun" && bullet.bullets.length > 0) {
+        const shotgunSound = new Audio('./assets/audio/shotgun.mp3');
+        shotgunSound.play().catch((error) => {
+            console.error("Erro ao reproduzir som da shotgun:", error);
+        });
+    }
+
+    if (armaEquipada === "ak47" && bullet.bullets.length > 0) {
+        const ak47Sound = new Audio('./assets/audio/ak.mp3');
+        ak47Sound.play().catch((error) => {
+            console.error("Erro ao reproduzir som da AK-47:", error);
+        });
+    }
+
+    if (armaEquipada === "lanca_granada" && bullet.bullets.length > 0) {
+        const lancaGranadaSound = new Audio('./assets/audio/ml.mp3');
+        lancaGranadaSound.play().catch((error) => {
+            console.error("Erro ao reproduzir som do lança-granada:", error);
+        });
+    }
+});
+}
+
 function desenha() {
     if (play === true) {
+        
+        // Som ao recarregar
+        document.addEventListener("keydown", (event) => {
+            if ((event.key === "r" || event.key === "R") && bullet.bullets.length === 0) {
+                recarregarSom.play();
+            }
+        });
+
         fundo.drawBackground(canva);
         fundo2.drawBackground(canva);
 

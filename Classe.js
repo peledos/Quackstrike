@@ -46,7 +46,7 @@ class Ducks extends Game {
 
     duck_reset(tiro) {
         if (tiro === true) {
-            this.y = Math.floor(Math.random() * (800 - 100 + 1)) + 100;
+            this.y = Math.floor(Math.random() * (712 - 100 + 1)) + 100; // Gera um valor entre 100 e 712
             this.x = -Math.floor(Math.random() * 201);
         }
     }
