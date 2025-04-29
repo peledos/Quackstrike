@@ -70,28 +70,44 @@ class Ducks extends Game {
     }
 }
 
-class Bullet extends Game{
-    speed = 0
-    isActive = false
-
-    checarArma(arma){
-        if(arma == 1){
-           return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5'];
-        }
-        else if(arma == 2){
-           return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5', 'bullet6', 'bullet7', 'bullet8', 'bullet9', 'bullet10'];
-        }
-        else if(arma == 3){
-           return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5', 'bullet6', 'bullet7', 'bullet8', 'bullet9', 'bullet10', 'bullet11', 'bullet12', 'bullet13', 'bullet14', 'bullet15'];
-        }
-    }
-    
-    drawBullets(){
-
+class Bullet extends Game {
+    constructor(x, y, h, w, a, ducks, image, bullets, score, time, isGameOver) {
+        super(x, y, h, w, a, ducks, image, bullets, score, time, isGameOver);
+        this.weaponImage = null; // Armazena a imagem carregada
+        this.speed = 0; // Corrigido: Adicionado `this` e ponto-e-vírgula
+        this.isActive = false; // Corrigido: Adicionado `this` e ponto-e-vírgula
     }
 
-    moveBullets(){
-}}
+        
+        checarArma(arma){
+            if(arma == 1){
+                return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5'];
+            }
+            else if(arma == 2){
+                return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5', 'bullet6', 'bullet7', 'bullet8', 'bullet9', 'bullet10'];
+            }
+            else if(arma == 3){
+                return this.bullets = ['bullet1', 'bullet2', 'bullet3', 'bullet4', 'bullet5', 'bullet6', 'bullet7', 'bullet8', 'bullet9', 'bullet10', 'bullet11', 'bullet12', 'bullet13', 'bullet14', 'bullet15'];
+            }
+        }
+        
+        drawArma(canva){
+            if (!this.weaponImage) {
+                this.weaponImage = new Image();
+                this.weaponImage.src = this.image;
+            }
+            
+            // Desenha a imagem da arma equipada
+            this.weaponImage.onload = () => {
+                canva.drawImage(this.weaponImage, 50, 900, 100, 100); // Ajuste a posição conforme necessário
+            };
+            
+            // Se a imagem já estiver carregada, desenhe diretamente
+            if (this.weaponImage.complete) {
+                canva.drawImage(this.weaponImage, 50, 900, 100, 100);
+            }
+    }
+}
 
 class Scream extends Game{
     gameOverDraw(){
