@@ -13,11 +13,12 @@ let fundo2 = new Game(1152, 0, 950, 1920, 0, [], './assets/fundo.png', 0, 0, 0, 
 let fundoMenu = new Game(0, 0, 950, 1920, 0, [], './assets/fundo.png', 0, 0, 0, false);
 let texto = new Game(0, 0, 970, 1920, 0, [], './assets/fundo.png', 0, 0, 0, false);
 let bullet = new Bullet(0, 0, 0, 0, 0, [], './assets/IMG_png/pato-preto.png', 0, 0, 0, false);
-let tremFundo = new Game(30, 730, 214, 1038, 0, [], './assets/IMG_png/tremz.png', 0, 0, 0, false);
-let tremPistol = new Game(30, 730, 214, 1038, 0, [], './assets/pistolTrem.png', 0, 0, 0, false);
-let tremShotgun = new Game(30, 730, 214, 1038, 0, [], './assets/tremShotgun.png', 0, 0, 0, false);
-let tremLanca_granada = new Game(30, 730, 214, 1038, 0, [], './assets/tremLanca.png', 0, 0, 0, false);
-let tremAk47 = new Game(30, 730, 214, 1038, 0, [], './assets/tremAk.png', 0, 0, 0, false);
+
+let tremFundo = new Game(30, 700, 214, 1038, 0, [], './assets/IMG_png/tremz.png', 0, 0, 0, false);
+let tremPistol = new Game(30, 700, 214, 1038, 0, [], './assets/pistolTrem.png', 0, 0, 0, false);
+let tremShotgun = new Game(30, 700, 214, 1038, 0, [], './assets/tremShotgun.png', 0, 0, 0, false);
+let tremLanca_granada = new Game(30, 700, 214, 1038, 0, [], './assets/tremLanca.png', 0, 0, 0, false);
+let tremAk47 = new Game(30, 700, 214, 1038, 0, [], './assets/tremAk.png', 0, 0, 0, false);
 
 let pistol = new Bullet(250, 270, 60, 90, 0, [], './assets/pistol.png', 0, 0, 0, false);
 let shotgun = new Bullet(810, 280, 50, 100, 0, [], './assets/shotgun.png', 0, 0, 0, false);
@@ -57,6 +58,24 @@ let play = false; // Variável para controlar o jogo
 let loja = false; // Variável para controlar a loja
 let gameOvergo = false; // Variável para controlar o game over
 
+let secretCode = "joao santos"; // Código secreto
+let inputSequence = ""; // Sequência de teclas pressionadas
+
+document.addEventListener("keydown", (event) => {
+    inputSequence += event.key.toLowerCase(); // Adiciona a tecla pressionada à sequência
+
+    // Verifica se a sequência corresponde ao código secreto
+    if (inputSequence.includes(secretCode)) {
+        fundo.score += 1000; // Adiciona 1000 pontos ao score
+        console.log("Código secreto ativado! 1000 pontos adicionados.");
+        inputSequence = ""; // Reseta a sequência após ativar o código
+    }
+
+    // Limita o tamanho da sequência para evitar excesso de memória
+    if (inputSequence.length > secretCode.length) {
+        inputSequence = inputSequence.slice(-secretCode.length);
+    }
+});
 
 document.addEventListener("keydown", (event) => {
     // Verifica se o jogador pressionou a tecla "Escape"
