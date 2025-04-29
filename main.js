@@ -25,13 +25,62 @@ let shotgun = new Bullet(810, 280, 50, 100, 0, [], './assets/shotgun.png', 0, 0,
 let lanca_granada = new Bullet(800, 570, 70, 100, 0, [], './assets/lanca_granada.png', 0, 0, 0, false);
 let ak47 = new Bullet(250, 560, 70, 120, 0, [], './assets/ak47.png', 0, 0, 0, false);
 
-let pistolS = new Audio('./assets/audios/pistolaTiro.mp3');
-let shotgunS = new Audio('./assets/audios/shotgun.mp3');
-let ak47S = new Audio('./assets/audios/ak.mp3');
-let lanca_granadaS = new Audio('./assets/audios/ml.mp3');
-let patoSom = new Audio('./assets/audios/quack.mp3');
-let fundoSom = new Audio('./assets/audios/patoambiente.mp3');
-let recarregarSom = new Audio('./assets/audios/recarregar.mp3');
+// Corrigindo os caminhos dos arquivos de áudio
+let pistolS = new Audio('./assets/audio/pistolaTiro.mp3');
+let shotgunS = new Audio('./assets/audio/shotgun.mp3');
+let ak47S = new Audio('./assets/audio/ak.mp3');
+let lanca_granadaS = new Audio('./assets/audio/ml.mp3');
+let patoSom = new Audio('./assets/audio/quack.mp3');
+let fundoSom = new Audio('./assets/audio/patoambiente.mp3');
+let recarregarSom = new Audio('./assets/audio/recarregar.mp3');
+
+// Adicionando os sons aos eventos correspondentes
+
+// Som de fundo do jogo
+fundoSom.loop = true; // Faz o som de fundo tocar em loop
+
+// Adicionando evento de interação do usuário para iniciar o áudio
+document.addEventListener("click", () => {
+    fundoSom.play().catch((error) => {
+        console.error("Erro ao reproduzir som de fundo:", error);
+    });
+});
+
+// Som ao atirar com a pistola
+document.addEventListener("click", (event) => {
+    if (armaEquipada === "pistol" && bullet.bullets.length > 0) {
+        pistolS.play();
+    }
+});
+
+// Som ao atirar com a shotgun
+document.addEventListener("click", (event) => {
+    if (armaEquipada === "shotgun" && bullet.bullets.length > 0) {
+        shotgunS.play();
+    }
+});
+
+// Som ao atirar com a AK-47
+document.addEventListener("click", (event) => {
+    if (armaEquipada === "ak47" && bullet.bullets.length > 0) {
+        ak47S.play();
+    }
+});
+
+// Som ao atirar com o lança-granada
+document.addEventListener("click", (event) => {
+    if (armaEquipada === "lanca_granada" && bullet.bullets.length > 0) {
+        lanca_granadaS.play();
+    }
+});
+
+// Som ao recarregar
+document.addEventListener("keydown", (event) => {
+    if ((event.key === "r" || event.key === "R") && bullet.bullets.length === 0) {
+        recarregarSom.play();
+    }
+});
+
 
 // Declarando os patos
 let patos = [
@@ -41,6 +90,11 @@ let patos = [
     new Ducks(-65, 300, 50, 80, 0, [], './assets/IMG_png/pato-preto.png', 0, 0, 0, false),
     new Ducks(-60, 350, 50, 80, 0, [], './assets/IMG_png/pato-preto.png', 0, 0, 0, false)
 ];
+
+// Som ao acertar um pato
+patos.forEach((pato) => {
+    patoSom.play();
+});
 
 let balasPorArma = {
     pistol: 5,
