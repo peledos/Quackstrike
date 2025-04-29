@@ -34,6 +34,39 @@ let patoSom = new Audio('./assets/audio/quack.mp3');
 let fundoSom = new Audio('./assets/audio/patoambiente.mp3');
 let recarregarSom = new Audio('./assets/audio/recarregar.mp3');
 
+// Pré-carregando os sons das armas
+const pistolSound = new Audio('./assets/audio/pistolaTiro.mp3');
+const shotgunSound = new Audio('./assets/audio/shotgun.mp3');
+const ak47Sound = new Audio('./assets/audio/ak.mp3');
+const lancaGranadaSound = new Audio('./assets/audio/ml.mp3');
+
+// Garantindo que o som seja reproduzido após interação do usuário
+document.addEventListener("click", (event) => {
+    if (bullet.bullets.length > 0) {
+        if (armaEquipada === "pistol") {
+            pistolSound.currentTime = 0; // Reinicia o som
+            pistolSound.play().catch((error) => {
+                console.error("Erro ao reproduzir som da pistola:", error);
+            });
+        } else if (armaEquipada === "shotgun") {
+            shotgunSound.currentTime = 0; // Reinicia o som
+            shotgunSound.play().catch((error) => {
+                console.error("Erro ao reproduzir som da shotgun:", error);
+            });
+        } else if (armaEquipada === "ak47") {
+            ak47Sound.currentTime = 0; // Reinicia o som
+            ak47Sound.play().catch((error) => {
+                console.error("Erro ao reproduzir som da AK-47:", error);
+            });
+        } else if (armaEquipada === "lanca_granada") {
+            lancaGranadaSound.currentTime = 0; // Reinicia o som
+            lancaGranadaSound.play().catch((error) => {
+                console.error("Erro ao reproduzir som do lança-granada:", error);
+            });
+        }
+    }
+});
+
 // Declarando os patos
 let patos = [
     new Ducks(-40, 400, 50, 80, 0, [], './assets/IMG_png/pato-preto.png', 0, 0, 0, false),
@@ -370,31 +403,31 @@ document.addEventListener("click", () => {
     initSound.play().catch(() => {}); // Ignora erros de reprodução inicial
 });
 
-// Reproduz o som correspondente ao tiro
+// Reproduzindo os sons no clique
 document.addEventListener("click", (event) => {
     if (armaEquipada === "pistol" && bullet.bullets.length > 0) {
-        const pistolSound = new Audio('./assets/audio/pistolaTiro.mp3');
+        pistolSound.currentTime = 0; // Reinicia o som
         pistolSound.play().catch((error) => {
             console.error("Erro ao reproduzir som da pistola:", error);
         });
     }
 
     if (armaEquipada === "shotgun" && bullet.bullets.length > 0) {
-        const shotgunSound = new Audio('./assets/audio/shotgun.mp3');
+        shotgunSound.currentTime = 0; // Reinicia o som
         shotgunSound.play().catch((error) => {
             console.error("Erro ao reproduzir som da shotgun:", error);
         });
     }
 
     if (armaEquipada === "ak47" && bullet.bullets.length > 0) {
-        const ak47Sound = new Audio('./assets/audio/ak.mp3');
+        ak47Sound.currentTime = 0; // Reinicia o som
         ak47Sound.play().catch((error) => {
             console.error("Erro ao reproduzir som da AK-47:", error);
         });
     }
 
     if (armaEquipada === "lanca_granada" && bullet.bullets.length > 0) {
-        const lancaGranadaSound = new Audio('./assets/audio/ml.mp3');
+        lancaGranadaSound.currentTime = 0; // Reinicia o som
         lancaGranadaSound.play().catch((error) => {
             console.error("Erro ao reproduzir som do lança-granada:", error);
         });
